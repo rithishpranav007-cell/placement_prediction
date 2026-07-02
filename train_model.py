@@ -47,8 +47,9 @@ def count_outliers_iqr(df, thresh=1.5):
 outlier_report = count_outliers_iqr(data)
 outlier_report
 
-X = data[["cgpa", "iq"]]
+X = data[["cgpa", "internships", "projects", "aptitude_score"]]
 y = data["placement"]
+
 
 model = LogisticRegression()
 model.fit(X, y)
@@ -67,11 +68,13 @@ scores = cross_val_score(
     scoring="accuracy"
 )
 
-print("Accuracy for each fold:")
+print("===== K-Fold Cross Validation =====")
+
 for i, score in enumerate(scores, start=1):
-    print(f"Fold {i}: {score:.2f}")
-print(f"\nMean Accuracy: {scores.mean():.2f}")
-print(f"Standard Deviation: {scores.std():.2f}")
+    print(f"Fold {i}: {score:.2%}")
+
+print("\nAverage Accuracy :", f"{scores.mean():.2%}")
+print("Standard Deviation:", f"{scores.std():.2%}")
 
 with open("model.pkl", "wb") as file:
     pickle.dump(model, file)
